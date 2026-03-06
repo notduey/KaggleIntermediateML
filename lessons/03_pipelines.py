@@ -2,28 +2,22 @@
 """
 Section 3: Pipelines
 """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 from utilities import load_split_melb
+
+# Pipelines are a simple way to keep your data preprocessing and modeling code organized. Specifically, a pipeline bundles preprocessing and modeling steps so you can use the whole bundle as if it were a single step.
+# Many data scientists hack together models without them, but pipelines have some important benefits:
+# - Cleaner code: accounting for data at each step of preprocessing can get messy, With a pipeline, you won't need to manually keep track of your training and validation data.
+# - Fewer bugs: there are fewer opportunities to misapply a step or forget a preprocessing step.
+# - Easier to productionize: It can be surprisingly hard to transition a model from a prototype to something deployable at scale. We won't go deep into the concerns relating to productionization, but a pipeline can help.
+# - More options for model validation: With a pipeline, you can use options like cross-validation (next section) to validate your model.
 
 # Load and split data
 X_train_full, X_valid_full, y_train, y_valid = load_split_melb()
 
 # Select categorical columns with relatively low cardinality (convenient but arbitrary)
-categorical_cols = [ # list of categorical columns that are store as text and have < 10 unique values
+categorical_cols = [ # list of categorical columns AND have < 10 unique values
     cname for cname in X_train_full.columns # loop through every column
+    # 'expression for item in iterable if condition', expression = value that's appended to list
     if X_train_full[cname].nunique() < 10 # checks cardinality, if column has < 10 unique values and
     and X_train_full[cname].dtype == "string" # column is data type 'string' (e.g. text)
 ]
@@ -58,14 +52,17 @@ numerical_transformer = SimpleImputer(strategy='constant') # constant imputes wi
 categorical_transformer = Pipeline(steps=[ # pipeline is a list of steps to perform
     ('imputer', SimpleImputer(strategy='most_frequent')), # imputes with most frequent value
     ('onehot', OneHotEncoder(handle_unknown='ignore')) # applies one-hot encoding
-    #handle_unknown='ignore' results in one-hot encoded columns be all zeros for that row, if there is an unknown value (e.g. training data shows "Red", "Blue", "Green", but test data has "Yellow")
+    # handle_unknown='ignore' results in row with unknown value to have all zeros
+    # e.g. training data shows "Red", "Blue", "Green", but test data has "Yellow":
+    #   Red  Blue  Green
+    #   0    0     0
 ])
 # Pipelines objects define the steps when transforming data
 # each step is a tuple ('name_of_step', transformer_object)
 
 # Bundle preprocessing for numerical and categorical data
 preprocessor = ColumnTransformer( # routes specific columns to specific transformers
-    transformers=[ # list of tuples (name, transformer_object, columns_to_apply_to)
+    transformers=[ # tuple list, parameters: (name, transformer_object, columns_to_apply_to)
         ('num', numerical_transformer, numerical_cols), # tranform numerical_col with numerical_transformer
         ('cat', categorical_transformer, categorical_cols) # transform categorical_cols with categorical_transformer pipeline (impute then one-hot encode)
     ]
@@ -100,5 +97,4 @@ score = mean_absolute_error(y_valid, preds)
 print('MAE:', score)
 # MAE: 160623.3888096991
 
-# Conclusion
-# Pipelines are valuable for cleaning up machine learning code and avoiding errors, and are especially useful for workflows with sophisticated data preprocessing.
+# Conclusion: pipelines are valuable for cleaning up machine learning code and avoiding errors, and are especially useful for workflows with sophisticated data preprocessing.
