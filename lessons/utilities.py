@@ -6,15 +6,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 
-def load_data(path, target_column):
-    """
-    Load data from csv file
-    """
-    data = pd.read_csv(path)
-    y = data[target_column]
-    X = data.drop([target_column], axis=1)
-    return X, y
-
 def load_split_melb():
     """
     Load data from melb_data.csv and split into train and test sets

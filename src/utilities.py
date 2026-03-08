@@ -6,15 +6,6 @@ from pathlib import Path
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
 
-def load_data(path, target_column):
-    """
-    Load data from csv file
-    """
-    data = pd.read_csv(path)
-    y = data[target_column]
-    X = data.drop([target_column], axis=1)
-    return X, y
-
 def read_filter_data():
     """
     Read data from train.csv and test.csv and filter out rows with missing target
