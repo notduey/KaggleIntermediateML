@@ -2,7 +2,11 @@
 """
 Section 5: XGBoost
 """
+import sys
+from pathlib import Path
 import pandas as pd
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 # Gradient boosting is a popular machine learning optimization technique. This method dominates many Kaggle competitions and achieves state-of-the-art results on a variety of datasets.
 # Previously, the random forest model was used, which achieves better performance than a single decision tree simply by averaging the predictions of many decision trees.

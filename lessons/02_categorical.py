@@ -2,8 +2,13 @@
 """
 Section 2: Categorical Variables
 """
+import sys
+from pathlib import Path
 import pandas as pd
-from utilities import load_split_melb, score_model
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+from src.utilities import load_split_melb, score_model
 
 # Categorical variables are variables that take on a limited number of possible values
 # Consider a survey that asks how often you eat breakfast and provides four options: "Never", "Rarely", "Most days", or "Every day." In this case, the data is categorical because responses fall into a fixed set of categories.

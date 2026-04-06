@@ -2,11 +2,16 @@
 """
 Section 1: Missing Values
 """
+import sys
+from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.impute import SimpleImputer
-from utilities import score_model
+
+sys.path.append(str(Path(__file__).resolve().parents[1])) # from this file, go up 1 directory
+
+from src.utilities import score_model
 
 # There are many ways data can end up with missing values for example:
 # A 2 bedroom house won't include a value for the size of a 3rd bedroom
