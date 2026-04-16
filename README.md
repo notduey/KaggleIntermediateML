@@ -39,7 +39,7 @@ cd.../.../KaggleIntermediateML
 ```
 **3. Create a virtual environment (recommended):**
 ```
-python -m venv venv
+python -m venv .venv
 source venv/bin/activate  # Mac/Linux
 venv\Scripts\activate     # Windows
 ```
